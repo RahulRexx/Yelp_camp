@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 
 var {mongoose} = require("./db/mongoose.js");
 var {Campground} = require("./models/campgrounds.js");
+var {Comment} = require("./models/comments.js");
 var {seedDB} = require("./seed.js");
 
 
@@ -74,13 +75,46 @@ app.get("/campgrounds/:id",(req,res) => {
 
 //===================comments ======================
 
-// app.get("/campgrounds/:id/comments/new", (req,res) => {
-//     Campground.findById(req.params.id).then( (res) => {
-//         res.render("comments/new.ejs" , {campground : res});
-//     },(err) => {
-//         console.log(err);
-//     })
-// });
+app.get("/campgrounds/:id/comments/new", (req,res) => {
+   Campground.findById(req.params.id,(err,campfound ) => {
+       if(err)
+       {
+           console.log(err);
+           res.redirect("/campgrounds");
+       }
+       else{
+           console.log("new comment hitted");
+          res.render("comments/new.ejs",{campgrounds : campfound});
+       }
+   })
+});
+
+app.post("/campgrounds/:id/comments",(req,res) => {
+
+    Campground.findById(req.params.id,(err,campfound) => {
+        if(err)
+        {
+            console.log(err);
+            res.redirect("/campgrounds");
+        }
+        else
+        {
+            Comment.create(req.body.comment,(err,comment) => {
+                if(err)
+                {
+                    console.log(err);
+                }
+                else{
+                    campfound.comments.push(comment);
+                    campfound.save();
+                    res.redirect("/campgrounds/"+campfound._id);
+                }
+            });
+
+        }
+    });
+
+});
 
 
 
