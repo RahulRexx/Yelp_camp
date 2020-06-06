@@ -31,7 +31,7 @@ app.get("/campgrounds",(req,res) => {
             console.log("Error while fetching campground");
         }
         else{
-            res.render('campgrounds.ejs', {
+            res.render('campgrounds/campgrounds.ejs', {
                 campgrounds: allcampgrounds
             })
         }
@@ -55,20 +55,33 @@ app.post("/campgrounds",(req,res) => {
 });
 
 app.get("/campgrounds/new", (req, res) => {
-    res.render("new.ejs");
+    res.render("campgrounds/new.ejs");
 }); 
 
 app.get("/campgrounds/:id",(req,res) => {
     // Campground.findById    (req.params.id, (err,campfound) => {
     Campground.findById(req.params.id).populate("comments").exec().then((campfound) => {
 
-        console.log(campfound);
-        // res.render("show.ejs",{ campground : campfound });
+        // console.log(campfound);
+        res.render("campgrounds/show.ejs", {
+            campground: campfound
+        });
 
     },(err) => {
         console.log(err);
     });
 });
+
+//===================comments ======================
+
+// app.get("/campgrounds/:id/comments/new", (req,res) => {
+//     Campground.findById(req.params.id).then( (res) => {
+//         res.render("comments/new.ejs" , {campground : res});
+//     },(err) => {
+//         console.log(err);
+//     })
+// });
+
 
 
 
