@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <title>Yelp Camp</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-
+        <linK rel="stylesheet" href="/stylesheets/main.css">
     </head>
     <body>
         <!-- <p>Header added</p> -->
@@ -15,15 +15,23 @@
                 </div>
                 <div class="navbar-collapse collapse justify-content-between">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/">Log In </span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/">Sign Up</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/">Log Out</a>
-                        </li>
+
+
+                      <%  if(!currentuser){ %>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/login">Log In </span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/register">Sign Up</a>
+                            </li>
+                     <%    } else { %>
+                            <li class="nav-item">
+                                <a class="nav-link"  href="#" > <%=currentuser.username%> </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/logout">Log Out</a>
+                            </li>
+                       <% }   %>
                     </ul>
                 </div>
 
