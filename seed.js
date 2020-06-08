@@ -3,6 +3,7 @@ var mongoose = require("mongoose");
 var {Campground} = require("./models/campgrounds.js");
 var {Comment} = require("./models/comments.js");
 
+
 var data = [
     {
         name : "First",
@@ -54,6 +55,7 @@ function seedDB() {
 };
 
     
+  
     
 
 
