@@ -10,3 +10,9 @@
 .img-thumbnail .caption-full {
     padding: 9px;
 }
+#Font-change {
+    font-size: 25px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-family: cursive;
+}
