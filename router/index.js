@@ -24,9 +24,9 @@ router.post("/register", (req, res) => {
         username: req.body.username
     }), req.body.password, (err, user) => {
         if (err) {
-            console.log(err);
-            // return res.redirect("/register");
-            return res.render("register");
+            // console.log("error is",err);
+            req.flash("error","This username already exist!, Try  different one");
+            return res.redirect("/register");
         }
         //local for local mode // facebook for facebook mode // twitter for twitter mode of authentication
         passport.authenticate("local")(req, res, () => {
