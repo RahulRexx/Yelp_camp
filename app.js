@@ -5,6 +5,7 @@ const passport = require("passport");
 const localStrategy = require("passport-local");
 const passportLocalMongoose = require("passport-local-mongoose");
 const methodOverride = require("method-override");
+const flash = require("connect-flash");
 
 var {mongoose} = require("./db/mongoose.js");
 var {Campground} = require("./models/campgrounds.js");
@@ -22,6 +23,7 @@ var app = express();
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(express.static(__dirname+"/public"));
+app.use(flash()); //flash configuration
 
 
 app.use(methodOverride("_method"));
@@ -29,7 +31,7 @@ app.use(methodOverride("_method"));
 
 //======================Express-session=============================== (secret  will be used to encode and decode the sessions )
 app.use(require("express-session")({
-    secret: "This is the secret",
+    secret: process.env.SECRET,
     resave: false,
     saveUninitialized: false
 }));
@@ -46,8 +48,11 @@ passport.deserializeUser(User.deserializeUser()); // this "serializeUser" and "D
 //====IMPORTANT MIDDLE WARE =======//
 app.use((req,res,next) => { 
     res.locals.currentuser = req.user;
+    res.locals.success = req.flash("success");
+    res.locals.error = req.flash("error");
     next();
 });
+
 
 app.use(indexrouter);
 app.use(campgroundrouter);

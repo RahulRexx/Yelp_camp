@@ -9,7 +9,7 @@
     <body>
         <!-- <p>Header added</p> -->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container-fluid">
+            <div class="container-fluid" style="margin: 0 50px;">
                 <div class="navbar-header">
                     <a class="navbar-brand" href="/">YelpCamp!</a>
                 </div>
@@ -38,5 +38,19 @@
             </div>
 
         </nav>
+
+        <div class="container" style="margin-top: 7px; margin-bottom: 7px;">
+           <% if(success && success.length > 0) { %>
+                <div class="alert alert-success" role="alert">
+                    <%= success %>
+                </div>
+            <% } %>   
+            <% if(error && error.length > 0) { %>
+                <div class="alert alert-danger" role="alert">
+                    <%= error %>
+                </div>
+            <% } %>
+
+        </div>
 
 

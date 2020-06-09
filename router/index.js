@@ -1,7 +1,8 @@
 var express = require("express");
 var router = express.Router();
 var passport = require("passport");
-var {User} = require("../models/users.js")
+var {User} = require("../models/users.js");
+var middleware = require("../middleware/middleware.js");
 
 
 
@@ -18,7 +19,7 @@ router.get("/register", (req, res) => {
 
 
 router.post("/register", (req, res) => {
-    console.log(req.body.username, req.body.password);
+    // console.log(req.body.username, req.body.password);
     User.register(new User({
         username: req.body.username
     }), req.body.password, (err, user) => {
@@ -29,6 +30,7 @@ router.post("/register", (req, res) => {
         }
         //local for local mode // facebook for facebook mode // twitter for twitter mode of authentication
         passport.authenticate("local")(req, res, () => {
+            req.flash("success",`Hii ${req.body.username}! Welcome to the YelpCamp!`);
             res.redirect("/campgrounds");
         })
 
@@ -39,25 +41,26 @@ router.get("/login", (req, res) => {
     res.render("login");
 });
 
-//passport.authenticate automatically takes the value that has been passed in the form 
+// passport.authenticate automatically takes the value that has been passed in the form 
 router.post("/login", passport.authenticate("local", {
+    successFlash : "Welcome Back!",
     successRedirect: "/campgrounds",
+    failureFlash: "Invalid Username or Password",
     failureRedirect: "/login"
+    
 }), (req, res) => {
-    console.log("hitted");
 });
+
+
+
+
 
 router.get("/logout", (req, res) => {
     req.logout(); //req.logout() == passport destroys all the user data in the session ,it no longer keeping tracks of this user data in the session
-    res.redirect("/");
+    req.flash("success", "Logged out seccessfully. Look forward to seeing you again!");
+    res.redirect("/campgrounds");
 });
 
 
-function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.redirect("/login");
-};
 
 module.exports = router;
